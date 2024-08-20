@@ -1,0 +1,44 @@
+NAME = game
+CXX = c++
+CXXFLAGS = -Werror -Wall -Werror -std=c++98
+H_PATH = -I.
+SUCCESS = $(GREEN)✔$(RESET)
+ODIR = ofiles
+
+#Colors:
+GREEN		=	\e[92;5;118m
+YELLOW		=	\e[93;5;226m
+GRAY		=	\e[33;2;37m
+RESET		=	\e[0m
+CURSIVE		=	\e[33;3m
+
+SRCS = main.cpp \
+	   AMateria.cpp \
+	   Character.cpp \
+	   Cure.cpp \
+	   Ice.cpp \
+	   MateriaSource.cpp
+
+OBJS = $(patsubst %.cpp,$(ODIR)/%.o,$(SRCS))
+
+all:$(NAME)
+
+$(NAME): $(OBJS)
+	@$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+	@printf "$(SUCESS) $(GREEN) Executable ready$(RESET)\n"
+
+$(OBJS):$(ODIR)/%.o:%.cpp
+	@mkdir -p $(dir $@)
+	@$(CXX) $(CXXFLAGS) $(H_PATH) -c $< -o $@
+
+clean:
+	@rm -f $(OBJS)
+	@printf "$(YELLOW) Object files removed$(RESET)\n"
+
+fclean:clean
+	@rm -f $(NAME)
+	@printf "$(YELLOW) Executable removed$(RESET)\n"
+
+re:fclean all
+
+.PHONY: all clean fclean re
